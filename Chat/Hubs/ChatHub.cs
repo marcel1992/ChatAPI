@@ -1,28 +1,35 @@
-﻿using Chat.RequestDTO;
+﻿using Chat.Interfaces;
+using Chat.RequestDTO;
 using Microsoft.AspNetCore.SignalR;
 using System;
 using System.Threading.Tasks;
 
 namespace Chat.Hubs
 {
-    public class ChatHub : Hub
+    public class ChatHub : Hub<IChatHub>
     {
+        private static int _counter = 0;
+
         #region Override
 
-        public override Task OnConnectedAsync()
+        public override async Task OnConnectedAsync()
         {
-            return base.OnConnectedAsync();
+            _counter++;
+            await Clients.All.UpdateCountAsync(_counter);
+            await base.OnConnectedAsync();
         }
-        public override Task OnDisconnectedAsync(Exception exception)
+        public override async Task OnDisconnectedAsync(Exception exception)
         {
-            return base.OnDisconnectedAsync(exception);
+            _counter--;
+            await Clients.All.UpdateCountAsync(_counter);
+            await base.OnDisconnectedAsync(exception);
         }
 
         #endregion
 
-        public Task SendMessage(MessageDTO message)
+        public async Task SendMessage(MessageDTO message)
         {
-            return Clients.All.SendAsync("OnReceive", message);
+            await Clients.All.OnReceiveAsync(message);
         }
     }
 }

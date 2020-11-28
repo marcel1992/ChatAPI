@@ -17,8 +17,7 @@ namespace Chat.Controllers
         }
 
         //path looks like this: https://localhost:44379/api/chat/send
-        [Route("send")]                                           
-        [HttpPost]
+        [HttpPost("~/api/chat/send")]
         public async Task<IActionResult> SendRequest([FromBody] MessageDTO message)
         {
             await _hubContext.Clients.All.SendAsync("OnReceive", message);
