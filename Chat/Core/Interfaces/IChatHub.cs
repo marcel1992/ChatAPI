@@ -1,11 +1,11 @@
 ﻿using Chat.RequestDTO;
 using System.Threading.Tasks;
 
-namespace Chat.Interfaces
+namespace Chat.Core.Interfaces
 {
     public interface IChatHub
     {
-        Task UpdateCountAsync(int count);
+        Task OnUpdateCountAsync(int count);
         Task OnReceiveAsync(MessageDTO message);
     }
 }

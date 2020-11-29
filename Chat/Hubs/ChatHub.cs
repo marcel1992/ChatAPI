@@ -1,4 +1,4 @@
-﻿using Chat.Interfaces;
+﻿using Chat.Core.Interfaces;
 using Chat.RequestDTO;
 using Microsoft.AspNetCore.SignalR;
 using System;
@@ -15,13 +15,13 @@ namespace Chat.Hubs
         public override async Task OnConnectedAsync()
         {
             _counter++;
-            await Clients.All.UpdateCountAsync(_counter);
+            await Clients.All.OnUpdateCountAsync(_counter);
             await base.OnConnectedAsync();
         }
         public override async Task OnDisconnectedAsync(Exception exception)
         {
             _counter--;
-            await Clients.All.UpdateCountAsync(_counter);
+            await Clients.All.OnUpdateCountAsync(_counter);
             await base.OnDisconnectedAsync(exception);
         }
 
